@@ -6,7 +6,7 @@ import org.wahlzeit.services.EmailAddressTest;
 import org.wahlzeit.services.LogBuilderTest;
 
 /**
- * Test Suite for all Services Tests
+ * test suite for all services tests
  */
 @RunWith(Suite.class)
 

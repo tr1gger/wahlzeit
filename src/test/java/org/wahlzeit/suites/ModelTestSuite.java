@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.wahlzeit.model.*;
 
 /**
- * Test Suite for all Model Tests
+ * test suite for all model tests
  */
 @RunWith(Suite.class)
 

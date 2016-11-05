@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.wahlzeit.handlers.TellFriendTest;
 
 /**
- * test suite for all Handler Tests
+ * test suite for all handler tests
  */
 @RunWith(Suite.class)
 

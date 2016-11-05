@@ -7,7 +7,7 @@ import org.wahlzeit.model.persistence.DatastoreAdapterTest;
 import org.wahlzeit.model.persistence.GcsAdapterTest;
 
 /**
- * Test Suite for all Model Persistence Tests
+ * test Suite for all model persistence tests
  */
 @RunWith(Suite.class)
 
