@@ -21,10 +21,7 @@
 package org.wahlzeit.main;
 
 import org.wahlzeit.handlers.*;
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.EnglishModelConfig;
-import org.wahlzeit.model.GermanModelConfig;
-import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.*;
 import org.wahlzeit.services.ConfigDir;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
@@ -76,6 +73,13 @@ public class ServiceMain extends ModelMain {
 	 */
 	public boolean isShuttingDown() {
 		return instance.isToStop;
+	}
+
+	/**
+	 *
+	 */
+	public void setIsInProduction(boolean isInProduction) {
+		this.isInProduction = isInProduction;
 	}
 
 	/**
