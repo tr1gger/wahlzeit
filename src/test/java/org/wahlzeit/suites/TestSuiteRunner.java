@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 import java.util.logging.Logger;
 
 /**
- * Helper class to run the test suite
+ * helper class to run the test suite
  */
 public class TestSuiteRunner {
 
