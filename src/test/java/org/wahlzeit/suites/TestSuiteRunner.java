@@ -13,6 +13,7 @@ public class TestSuiteRunner {
 
     private static Logger log = Logger.getLogger(TestSuiteRunner.class.getName());
 
+
     public static void main(String[] args) {
 
         Result result = JUnitCore.runClasses(AllTestSuite.class);
