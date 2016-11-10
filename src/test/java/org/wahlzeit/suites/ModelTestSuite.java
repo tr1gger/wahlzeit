@@ -14,7 +14,7 @@ import org.wahlzeit.model.*;
         AccessRightsTest.class,
         FlagReasonTest.class,
         GenderTest.class,
-        Guest.class,
+        GuestTest.class,
         LocationTest.class,
         PhotoFilterTest.class,
         TagsTest.class,
