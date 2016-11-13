@@ -1,23 +1,21 @@
 package org.wahlzeit.model;
 
 
-import org.wahlzeit.services.LogBuilder;
+import com.googlecode.objectify.annotation.Subclass;
 
 import java.util.logging.Logger;
 
+@Subclass
 public class CarPhoto extends Photo {
 
-    private static final Logger log = Logger.getLogger(CarPhoto.class.getName());
 
-    private CarPhotoManager carPhotoManager;
+    private static final Logger log = Logger.getLogger(CarPhoto.class.getName());
 
     public CarPhoto(){
         super();
     }
 
     public CarPhoto(PhotoId id){
-       super(id);
-        log.warning("Car PHOTO CREATETD with id:" + id);
-        log.config(LogBuilder.createSystemMessage().addParameter("CAR PHOTO CREATED with ID: ", this.getId()).toString());
+        super(id);
     }
 }
