@@ -27,12 +27,10 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
-import org.wahlzeit.services.DataObject;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.Language;
-import org.wahlzeit.services.ObjectManager;
+import org.wahlzeit.services.*;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A photo represents a user-provided (uploaded) photo.
@@ -40,6 +38,7 @@ import java.util.Map;
 @Entity
 public class Photo extends DataObject {
 
+	private static final Logger log = Logger.getLogger(Photo.class.getName());
 	/**
 	 *
 	 */
@@ -150,7 +149,7 @@ public class Photo extends DataObject {
 	 */
 	public Photo(PhotoId myId) {
 		id = myId;
-
+		log.warning("PHOTO CREATETD with id:" + myId);
 		incWriteCount();
 	}
 
