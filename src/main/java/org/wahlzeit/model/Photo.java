@@ -32,6 +32,7 @@ import org.wahlzeit.services.*;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
@@ -149,7 +150,6 @@ public class Photo extends DataObject {
 	 */
 	public Photo(PhotoId myId) {
 		id = myId;
-		log.warning("PHOTO CREATETD with id:" + myId);
 		incWriteCount();
 	}
 
