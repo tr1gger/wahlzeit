@@ -36,21 +36,11 @@ public class PhotoUtil {
 
 	private static final Logger log = Logger.getLogger(PhotoUtil.class.getName());
 
-
-	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-		Photo result = PhotoFactory.getInstance().createPhoto(id);
-		return createDefaultPhoto(result, filename, id, uploadedImage);
-	}
-
-	public static Photo createCarPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-		Photo result = CarPhotoFactory.getInstance().createPhoto(id);
-		return createDefaultPhoto(result, filename, id, uploadedImage);
-	}
-
 	/**
 	 * @methodtype creation
 	 */
-	public static Photo createDefaultPhoto(Photo result, String filename, PhotoId id, Image uploadedImage) throws Exception {
+	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
+		Photo result = CarPhotoFactory.getInstance().createPhoto(id);
 		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 
 		createImageFiles(uploadedImage, result);
