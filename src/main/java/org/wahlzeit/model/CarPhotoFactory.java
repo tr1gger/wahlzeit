@@ -19,11 +19,11 @@ public class CarPhotoFactory extends PhotoFactory {
         return instance;
     }
 
-    public Photo createCarPhoto(){
+    public Photo createPhoto(){
          return new CarPhoto();
     }
 
-    public Photo createCarPhoto(PhotoId id){
+    public Photo createPhoto(PhotoId id){
         return new CarPhoto(id);
     }
 
