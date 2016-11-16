@@ -12,6 +12,7 @@ public class Location {
     }
 
     public double getDistance(Location location) {
+
         return coordinate.getDistance(location.coordinate);
     }
 }

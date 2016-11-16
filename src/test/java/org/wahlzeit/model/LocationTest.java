@@ -11,30 +11,30 @@ public class LocationTest {
 
     @Test
     public void testGetDistance(){
-        /**
-         * Berlin
-         */
-        Location berlin = new Location(new Coordinate(52.517 , 13.40));
 
-        /**
-         * Tokyo
-         */
-        Location tokyo = new Location(new Coordinate(35.70 , 139.767));
+        Location berlin = new Location(new SphericCoordinate(52.517 , 13.40));
 
-        /**
-         * North Pole
-         */
-        Location northPole = new Location(new Coordinate(0, 90));
+        Location tokyo = new Location(new SphericCoordinate(35.70 , 139.767));
 
-        /**
-         * South Pole
-         */
-        Location southPole = new Location(new Coordinate(0, 270));
+        Location northPole = new Location(new SphericCoordinate(0, 90));
+
+        Location southPole = new Location(new SphericCoordinate(0, -90));
+
 
         assertEquals(8918.0, berlin.getDistance(tokyo), 5);
         assertEquals(tokyo.getDistance(berlin), berlin.getDistance(tokyo), 0);
-        assertEquals(Coordinate.EARTH_RADIUS * Math.PI, northPole.getDistance(southPole), 0);
+        assertEquals(SphericCoordinate.EARTH_RADIUS_KM * Math.PI, northPole.getDistance(southPole), 0);
         assertEquals(southPole.getDistance(northPole), northPole.getDistance(southPole), 5);
-        assertEquals(Coordinate.EARTH_RADIUS, southPole.getDistance(northPole) / (Math.PI), 0);
+        assertEquals(SphericCoordinate.EARTH_RADIUS_KM, southPole.getDistance(northPole) / (Math.PI), 0);
+    }
+
+    @Test
+    public void testCartesianGetDistance(){
+
+        Location northPole = new Location(new CartesianCoordinate(0,0, SphericCoordinate.EARTH_RADIUS_KM));
+        Location southPole = new Location(new CartesianCoordinate(0,0, -SphericCoordinate.EARTH_RADIUS_KM));
+
+        System.out.println("Distance: " + northPole.getDistance(southPole));
+
     }
 }
