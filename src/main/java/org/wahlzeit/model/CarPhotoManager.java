@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CarPhotoManager extends PhotoManager {
 
-    protected static final PhotoManager instance = new CarPhotoManager();
+    protected static PhotoManager instance = new CarPhotoManager();
 
     protected Map<PhotoId, Photo> photos = new HashMap<PhotoId, Photo>();
 
