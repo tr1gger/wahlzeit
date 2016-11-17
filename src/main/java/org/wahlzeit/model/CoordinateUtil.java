@@ -1,14 +1,13 @@
 package org.wahlzeit.model;
 
+import javax.swing.text.html.HTMLDocument;
 
+/**
+ * Created by robert on 18.11.16.
+ */
 public class CoordinateUtil {
 
 
-    /**
-     * transforms a CartesianCoordinate to a SphericCoordinate
-     * @param cartesianCoordinate coordinate on earth consisting of x, y and z
-     * @return SphericCoordinate
-     */
     public static SphericCoordinate transformCartesianCoordinate(CartesianCoordinate cartesianCoordinate){
 
         /**
@@ -24,16 +23,15 @@ public class CoordinateUtil {
         }
 
         double radius = Math.sqrt(x*x + y*y + z*z);
+        double delta = SphericCoordinate.EARTH_RADIUS_KM - radius;
 
-        if(radius == SphericCoordinate.EARTH_RADIUS_KM){
-
-            System.out.println("RADIUS: " + radius);
-           // throw new IllegalArgumentException("cartesian coordinates must be on earth!");
+        if(Math.abs(delta) > 0.01) {
+            throw new IllegalArgumentException("cartesian coordinates must be on earth!");
         }
 
         double phi;
         double argPhi = x / (Math.sqrt(x*x + y*y));
-        double acos = Math.acos(Math.toRadians(argPhi));
+        double acos = Math.acos(argPhi);
 
         if(y >= 0){
             phi = acos;
@@ -45,32 +43,22 @@ public class CoordinateUtil {
         double lambda = Math.PI / 2 - Math.atan(argTan);
 
 
-        return new SphericCoordinate(Math.toDegrees(phi), Math.toDegrees(lambda));
+        return new SphericCoordinate(Math.toDegrees(lambda), Math.toDegrees(phi));
     }
 
-
-
-    public static double getDistance(SphericCoordinate sphericCoordinateA, SphericCoordinate sphericCoordinateB){
-
-        double phiA = Math.toRadians(sphericCoordinateA.getLatitude());
-        double lambdaA = Math.toRadians(sphericCoordinateA.getLongitude());
-
-        double phiB = Math.toRadians(sphericCoordinateB.getLatitude());
-        double lambdaB = Math.toRadians(sphericCoordinateB.getLongitude());
+    public static CartesianCoordinate transformSphericCoordinate(SphericCoordinate sphericCoordinate){
 
         /**
-         * Formula for calculating distance between two points on a round sphere
-         * https://de.wikipedia.org/wiki/Orthodrome
+         * transform spheric coordinate https://de.wikipedia.org/wiki/Kugelkoordinaten
          */
+        double theta = Math.toRadians(sphericCoordinate.getLatitude());
+        double phi = Math.toRadians(sphericCoordinate.getLongitude());
 
-        double val = Math.sin(phiA) * Math.sin(phiB)
-                + Math.cos(phiA) * Math.cos(phiB) *
-                Math.cos(lambdaA - lambdaB);
+        double x = SphericCoordinate.EARTH_RADIUS_KM * Math.sin(theta) * Math.cos(phi);
+        double y = SphericCoordinate.EARTH_RADIUS_KM * Math.sin(theta) * Math.sin(phi);
+        double z = SphericCoordinate.EARTH_RADIUS_KM * Math.cos(theta);
 
-        return SphericCoordinate.EARTH_RADIUS_KM * Math.acos(val);
+        return new CartesianCoordinate(x, y, z);
     }
-
-
-
 
 }

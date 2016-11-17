@@ -29,15 +29,26 @@ public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
         return z;
     }
 
+
+    /**
+     * @param coordinate coordinate on earth consisting of x, y and z
+     * @return double
+     */
     @Override
     public double getDistance(CartesianCoordinate coordinate) {
 
         /**
-         * convert CartesianCoordinate to SphericCoordinate
+         * Euclidean distance
+         * further information https://en.wikipedia.org/wiki/Euclidean_distance
          */
-        SphericCoordinate otherSphericCoordinate = CoordinateUtil.transformCartesianCoordinate(coordinate);
-        SphericCoordinate sphericCoordinate = CoordinateUtil.transformCartesianCoordinate(this);
+        double x = coordinate.getX();
+        double y = coordinate.getY();
+        double z = coordinate.getZ();
 
-        return CoordinateUtil.getDistance(sphericCoordinate, otherSphericCoordinate);
+        double deltaX = this.x - x;
+        double deltaY = this.y - y;
+        double deltaZ = this.z - z;
+
+        return Math.sqrt(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
     }
 }

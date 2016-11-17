@@ -9,9 +9,8 @@ public class SphericCoordinate implements Coordinate<SphericCoordinate>{
 
     private double latitude;
     private double longitude;
-    private double radius;
 
-    /**
+    /** latitude must be between -90 and 90 && longitude must be between -180 and 180 degree
      * @param latitude latitude > 0 north, latitude < 0 south
      * @param longitude longitude > 0 east, longitude < 0 west
      */
@@ -36,7 +35,23 @@ public class SphericCoordinate implements Coordinate<SphericCoordinate>{
 
     @Override
     public double getDistance(SphericCoordinate coordinate){
-        return CoordinateUtil.getDistance(this, coordinate);
+
+        double phiA = Math.toRadians(coordinate.getLatitude());
+        double lambdaA = Math.toRadians(coordinate.getLongitude());
+
+        double phiB = Math.toRadians(latitude);
+        double lambdaB = Math.toRadians(longitude);
+
+        /**
+         * Formula for calculating distance between two points on a round sphere
+         * https://de.wikipedia.org/wiki/Orthodrome
+         */
+
+        double val = Math.sin(phiA) * Math.sin(phiB)
+                + Math.cos(phiA) * Math.cos(phiB) *
+                Math.cos(lambdaA - lambdaB);
+
+        return SphericCoordinate.EARTH_RADIUS_KM * Math.acos(val);
     }
 
 }
