@@ -2,7 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test cases for Location Class
@@ -22,6 +22,4 @@ public class LocationTest {
         assertEquals(lat, coordinate.getLatitude(), 10E-10);
         assertEquals(lng, coordinate.getLongitude(), 10E-10);
     }
-
-
 }

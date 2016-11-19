@@ -2,7 +2,8 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class CartesianCoordinateTest {
 
@@ -22,11 +23,6 @@ public class CartesianCoordinateTest {
         assertEquals(1, cartesianCoordinateA.getX(), 0);
         assertEquals(2, cartesianCoordinateA.getY(), 0);
         assertEquals(3, cartesianCoordinateA.getZ(), 0);
-    }
-
-    @Test
-    public void testInterface(){
-
     }
 
     @Test

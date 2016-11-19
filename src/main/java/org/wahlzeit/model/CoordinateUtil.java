@@ -1,10 +1,5 @@
 package org.wahlzeit.model;
 
-import javax.swing.text.html.HTMLDocument;
-
-/**
- * Created by robert on 18.11.16.
- */
 public class CoordinateUtil {
 
 
@@ -25,8 +20,8 @@ public class CoordinateUtil {
         double radius = Math.sqrt(x*x + y*y + z*z);
         double delta = SphericCoordinate.EARTH_RADIUS_KM - radius;
 
-        if(Math.abs(delta) > 0.01) {
-            throw new IllegalArgumentException("cartesian coordinates must be on earth!");
+        if(Math.abs(delta) > 10E-2) {
+            throw new IllegalArgumentException("cartesian coordinates should be on earth! Your Radius is " + radius + " KM");
         }
 
         double phi;

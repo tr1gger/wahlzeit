@@ -25,6 +25,7 @@ public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
         return y;
     }
 
+
     public double getZ() {
         return z;
     }
