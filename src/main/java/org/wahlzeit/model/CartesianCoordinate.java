@@ -1,6 +1,6 @@
 package org.wahlzeit.model;
 
-public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
+public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
     private double y;
@@ -11,7 +11,7 @@ public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
      * @param y in KM
      * @param z in KM
      */
-    public CartesianCoordinate(double x, double y, double z){
+    public CartesianCoordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -25,18 +25,20 @@ public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
         return y;
     }
 
-
     public double getZ() {
         return z;
     }
 
 
+    public void visit(Visitor v) {
+        v.visit(this);
+    }
+
     /**
      * @param coordinate coordinate on earth consisting of x, y and z
      * @return double
      */
-    @Override
-    public double getDistance(CartesianCoordinate coordinate) {
+    public double doGetDistance(CartesianCoordinate coordinate) {
 
         /**
          * Euclidean distance
@@ -50,6 +52,77 @@ public class CartesianCoordinate implements Coordinate<CartesianCoordinate> {
         double deltaY = this.y - y;
         double deltaZ = this.z - z;
 
-        return Math.sqrt(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+    }
+
+
+    SphericCoordinate convert() {
+
+        /**
+         * transformation of cartesian coordinates into spherical
+         * further information http://www.mathepedia.de/Kugelkoordinaten.aspx
+         */
+        double x = getX();
+        double y = getY();
+        double z = getZ();
+
+        if (x == 0 && y == 0) {
+            throw new IllegalArgumentException("x and y must be not 0!");
+        }
+
+        double radius = Math.sqrt(x * x + y * y + z * z);
+        double delta = SphericCoordinate.EARTH_RADIUS_KM - radius;
+
+        if (Math.abs(delta) > 10E-2) {
+            throw new IllegalArgumentException("cartesian coordinates should be on earth! Your Radius is " + radius + " KM");
+        }
+
+        double phi;
+        double argPhi = x / (Math.sqrt(x * x + y * y));
+        double acos = Math.acos(argPhi);
+
+        if (y >= 0) {
+            phi = acos;
+        } else {
+            phi = 2 * Math.PI - acos;
+        }
+
+        double argTan = z / Math.sqrt(x * x + y * y);
+        double lambda = Math.PI / 2 - Math.atan(argTan);
+
+
+        return new SphericCoordinate(Math.toDegrees(lambda), Math.toDegrees(phi));
+    }
+
+    @Override
+    public double getDistance(AbstractCoordinate abstractCoordinate) {
+        Visitor visitor = new Visitor() {
+
+            double distance;
+
+            @Override
+            public double getResult() {
+                return distance;
+            }
+
+            @Override
+            public void visit(CartesianCoordinate cartesianCoordinate) {
+                distance = doGetDistance(cartesianCoordinate);
+            }
+
+            @Override
+            public void visit(SphericCoordinate sphericCoordinate) {
+                CartesianCoordinate cartesianCoordinate = sphericCoordinate.convert();
+                distance = doGetDistance(cartesianCoordinate);
+            }
+        };
+
+        abstractCoordinate.visit(visitor);
+        return visitor.getResult();
+    }
+
+    @Override
+    public boolean isEqual(AbstractCoordinate coordinate) {
+        return false;
     }
 }

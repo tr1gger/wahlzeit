@@ -48,16 +48,8 @@ public class SphericCoordinateTest {
         SphericCoordinate berlin = new SphericCoordinate(52.517 , 13.40);
         SphericCoordinate tokyo = new SphericCoordinate(35.70 , 139.767);
 
-        CartesianCoordinate cartesianCoordinate = CoordinateUtil.transformSphericCoordinate(berlin);
-
-        SphericCoordinate sphericCoordinate = CoordinateUtil.transformCartesianCoordinate(cartesianCoordinate);
-        System.out.println("Spher: " + sphericCoordinate.getLatitude() + " " + sphericCoordinate.getLongitude());
-
-
         SphericCoordinate northPole = new SphericCoordinate(0, 90);
         SphericCoordinate southPole = new SphericCoordinate(0, -90);
-
-        System.out.println(berlin.getDistance(tokyo));
 
         /**
          * distance between berlin and tokyo

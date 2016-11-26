@@ -24,24 +24,24 @@ public class CoordinateUtilTest {
     public void setUp(){
 
         sphericCoordinate = new SphericCoordinate(lat, lng);
-        transformedSphericCoordinate = CoordinateUtil.transformSphericCoordinate(sphericCoordinate);
+        transformedSphericCoordinate = sphericCoordinate.convert();
 
         cartesianCoordinate = new CartesianCoordinate(x, y, z);
-        transformedCartesianCoordinate = CoordinateUtil.transformCartesianCoordinate(cartesianCoordinate);
+        transformedCartesianCoordinate = cartesianCoordinate.convert();
     }
 
     @Test
     public void testTransformCartesianCoordinate(){
 
-        assertEquals(lat, CoordinateUtil.transformCartesianCoordinate(transformedSphericCoordinate).getLatitude(), 10E-2);
-        assertEquals(lng, CoordinateUtil.transformCartesianCoordinate(transformedSphericCoordinate).getLongitude(), 10E-2);
+        assertEquals(lat, transformedSphericCoordinate.convert().getLatitude(), 10E-2);
+        assertEquals(lng, transformedSphericCoordinate.convert().getLongitude(), 10E-2);
     }
 
     @Test
     public void testTransformSphericCoordinate(){
 
-        assertEquals(x, CoordinateUtil.transformSphericCoordinate(transformedCartesianCoordinate).getX(), 10E-2);
-        assertEquals(y, CoordinateUtil.transformSphericCoordinate(transformedCartesianCoordinate).getY(), 10E-2);
-        assertEquals(z, CoordinateUtil.transformSphericCoordinate(transformedCartesianCoordinate).getZ(), 10E-2);
+        assertEquals(x, transformedCartesianCoordinate.convert().getX(), 10E-2);
+        assertEquals(y, transformedCartesianCoordinate.convert().getY(), 10E-2);
+        assertEquals(z, transformedCartesianCoordinate.convert().getZ(), 10E-2);
     }
 }

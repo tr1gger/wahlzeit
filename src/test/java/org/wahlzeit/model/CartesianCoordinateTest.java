@@ -11,18 +11,18 @@ public class CartesianCoordinateTest {
     CartesianCoordinate cartesianCoordinateA;
     CartesianCoordinate cartesianCoordinateB;
 
+    @Test
+    public void testConstructor(){
+        assertEquals(10, cartesianCoordinateB.getX(), 0);
+        assertEquals(10, cartesianCoordinateB.getY(), 0);
+        assertEquals(10, cartesianCoordinateB.getZ(), 0);
+    }
+
+
     @Before
     public void setUp(){
         cartesianCoordinateA = new CartesianCoordinate(0, 0, 0);
         cartesianCoordinateB = new CartesianCoordinate(10, 10, 10);
-    }
-
-
-    @Test
-    public void testConstructor(){
-        assertEquals(1, cartesianCoordinateA.getX(), 0);
-        assertEquals(2, cartesianCoordinateA.getY(), 0);
-        assertEquals(3, cartesianCoordinateA.getZ(), 0);
     }
 
     @Test

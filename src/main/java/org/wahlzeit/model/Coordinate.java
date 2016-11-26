@@ -1,8 +1,10 @@
 package org.wahlzeit.model;
 
 
-public interface Coordinate<T> {
+public interface Coordinate {
 
-    double getDistance(T coordinate);
+    double getDistance(AbstractCoordinate coordinate);
+
+    boolean isEqual(AbstractCoordinate coordinate);
 
 }
