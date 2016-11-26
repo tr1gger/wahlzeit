@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import java.util.Objects;
+
 public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
@@ -95,14 +97,19 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public double getDistance(AbstractCoordinate abstractCoordinate) {
+    public double getDistance(AbstractCoordinate coordinate) {
         Visitor visitor = new Visitor() {
 
             double distance;
 
             @Override
-            public double getResult() {
+            public double getDistance() {
                 return distance;
+            }
+
+            @Override
+            public boolean isEqual() {
+                return false;
             }
 
             @Override
@@ -117,12 +124,56 @@ public class CartesianCoordinate extends AbstractCoordinate {
             }
         };
 
-        abstractCoordinate.visit(visitor);
-        return visitor.getResult();
+        coordinate.visit(visitor);
+        return visitor.getDistance();
+    }
+
+    private boolean doIsEqual(CartesianCoordinate cartesianCoordinate) {
+
+            if (this == cartesianCoordinate)
+                return true;
+
+            if (cartesianCoordinate == null)
+                return false;
+
+            if (getClass() != cartesianCoordinate.getClass())
+                return false;
+
+            return Objects.equals(x, cartesianCoordinate.x)
+                    && Objects.equals(y, cartesianCoordinate.y)
+                    && Objects.equals(z, cartesianCoordinate.z);
     }
 
     @Override
     public boolean isEqual(AbstractCoordinate coordinate) {
-        return false;
+
+        Visitor visitor = new Visitor() {
+
+            boolean isEqual;
+
+            @Override
+            public double getDistance() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEqual() {
+                return isEqual;
+            }
+
+            @Override
+            public void visit(CartesianCoordinate cartesianCoordinate) {
+                isEqual = doIsEqual(cartesianCoordinate);
+            }
+
+            @Override
+            public void visit(SphericCoordinate sphericCoordinate) {
+                isEqual = false;
+
+            }
+        };
+
+        coordinate.visit(visitor);
+        return visitor.isEqual();
     }
 }

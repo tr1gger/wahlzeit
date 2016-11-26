@@ -3,13 +3,14 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class CartesianCoordinateTest {
 
 
     CartesianCoordinate cartesianCoordinateA;
     CartesianCoordinate cartesianCoordinateB;
+    SphericCoordinate sphericCoordinate;
 
     @Test
     public void testConstructor(){
@@ -23,6 +24,20 @@ public class CartesianCoordinateTest {
     public void setUp(){
         cartesianCoordinateA = new CartesianCoordinate(0, 0, 0);
         cartesianCoordinateB = new CartesianCoordinate(10, 10, 10);
+        sphericCoordinate = new SphericCoordinate(10, 10);
+    }
+
+    @Test
+    public void testIsEqual(){
+        assertFalse(cartesianCoordinateA.isEqual(cartesianCoordinateB));
+        assertFalse(cartesianCoordinateB.isEqual(cartesianCoordinateA));
+        assertTrue(cartesianCoordinateA.isEqual(cartesianCoordinateA));
+    }
+
+    @Test
+    public void testIsEqualSphericCoordinate(){
+        assertFalse(cartesianCoordinateA.isEqual(sphericCoordinate));
+        assertFalse(sphericCoordinate.isEqual(cartesianCoordinateA));
     }
 
     @Test

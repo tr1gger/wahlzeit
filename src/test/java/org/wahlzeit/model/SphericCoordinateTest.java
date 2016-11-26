@@ -1,11 +1,28 @@
 package org.wahlzeit.model;
 
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class SphericCoordinateTest {
+
+    double berlinTokyoDistance = 8918.95;
+    double epsilon = 1E-4;
+
+    SphericCoordinate berlin;
+    SphericCoordinate tokyo;
+
+    CartesianCoordinate cartesianCoordinate;
+
+    @Before
+    public void setUp(){
+        berlin = new SphericCoordinate(52.517 , 13.40);
+        tokyo = new SphericCoordinate(35.70 , 139.767);
+
+        cartesianCoordinate = new CartesianCoordinate(10, 10, 10);
+    }
 
     @Test
     public void testEarthRadius(){
@@ -19,8 +36,8 @@ public class SphericCoordinateTest {
         double lng = 90;
 
         SphericCoordinate sphericCoordinate = new SphericCoordinate(lat, lng);
-        assertEquals(lat, sphericCoordinate.getLatitude(), 1E-10);
-        assertEquals(lng, sphericCoordinate.getLongitude(), 1E-10);
+        assertEquals(lat, sphericCoordinate.getLatitude(), epsilon);
+        assertEquals(lng, sphericCoordinate.getLongitude(), epsilon);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -45,16 +62,13 @@ public class SphericCoordinateTest {
     @Test
     public void testGetDistance(){
 
-        SphericCoordinate berlin = new SphericCoordinate(52.517 , 13.40);
-        SphericCoordinate tokyo = new SphericCoordinate(35.70 , 139.767);
-
         SphericCoordinate northPole = new SphericCoordinate(0, 90);
         SphericCoordinate southPole = new SphericCoordinate(0, -90);
 
         /**
          * distance between berlin and tokyo
          */
-        assertEquals(8918.95, berlin.getDistance(tokyo), 1E-4);
+        assertEquals(berlinTokyoDistance, berlin.getDistance(tokyo), epsilon);
         assertEquals(tokyo.getDistance(berlin), berlin.getDistance(tokyo), 0);
 
         /**
@@ -66,6 +80,19 @@ public class SphericCoordinateTest {
          * earth radius by distance between north and south pole
          */
         assertEquals(SphericCoordinate.EARTH_RADIUS_KM, southPole.getDistance(northPole) / (Math.PI), 0);
+    }
+
+    @Test
+    public void testIsEqual(){
+        assertTrue(berlin.isEqual(berlin));
+        assertFalse(berlin.isEqual(tokyo));
+        assertFalse(tokyo.isEqual(berlin));
+    }
+
+    @Test
+    public void testIsEqualCartesianCoordinate(){
+        assertFalse(berlin.isEqual(cartesianCoordinate));
+        assertFalse(cartesianCoordinate.isEqual(berlin));
     }
 
 

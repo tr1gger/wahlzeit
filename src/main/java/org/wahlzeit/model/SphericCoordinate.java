@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import java.util.Objects;
+
 /**
  * class represents SphericCoordinate on earth
  */
@@ -83,8 +85,13 @@ public class SphericCoordinate extends AbstractCoordinate {
             double distance;
 
             @Override
-            public double getResult() {
+            public double getDistance() {
                 return distance;
+            }
+
+            @Override
+            public boolean isEqual() {
+                return false;
             }
 
             @Override
@@ -100,11 +107,53 @@ public class SphericCoordinate extends AbstractCoordinate {
         };
 
         abstractCoordinate.visit(visitor);
-        return visitor.getResult();
+        return visitor.getDistance();
+    }
+
+    private boolean doIsEqual(SphericCoordinate sphericCoordinate) {
+
+        if (this == sphericCoordinate)
+            return true;
+
+        if (sphericCoordinate == null)
+            return false;
+
+        if (getClass() != sphericCoordinate.getClass())
+            return false;
+
+        return Objects.equals(latitude, sphericCoordinate.getLatitude())
+                && Objects.equals(longitude, sphericCoordinate.getLongitude());
     }
 
     @Override
     public boolean isEqual(AbstractCoordinate coordinate) {
-        return false;
+
+        Visitor visitor = new Visitor() {
+
+            boolean isEqual;
+
+            @Override
+            public double getDistance() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEqual() {
+                return isEqual;
+            }
+
+            @Override
+            public void visit(CartesianCoordinate cartesianCoordinate) {
+                isEqual = false;
+            }
+
+            @Override
+            public void visit(SphericCoordinate sphericCoordinate) {
+                isEqual = doIsEqual(sphericCoordinate);
+            }
+        };
+
+        coordinate.visit(visitor);
+        return visitor.isEqual();
     }
 }

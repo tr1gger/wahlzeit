@@ -1,7 +1,10 @@
 package org.wahlzeit.model;
 
 interface Visitor {
-    double getResult();
+
+    double getDistance();
+    boolean isEqual();
+
     void visit(CartesianCoordinate cartesianCoordinate);
     void visit(SphericCoordinate sphericCoordinate);
 }
