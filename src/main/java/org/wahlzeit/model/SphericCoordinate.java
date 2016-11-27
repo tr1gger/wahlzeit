@@ -1,6 +1,5 @@
 package org.wahlzeit.model;
-
-import java.util.Objects;
+import java.util.Map;
 
 /**
  * class represents SphericCoordinate on earth
@@ -12,13 +11,14 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double latitude;
     private double longitude;
 
+
     /**
      * latitude must be between -90 and 90 && longitude must be between -180 and 180 degree
      *
      * @param latitude  latitude > 0 north, latitude < 0 south
      * @param longitude longitude > 0 east, longitude < 0 west
      */
-    SphericCoordinate(double latitude, double longitude) {
+    public SphericCoordinate(double latitude, double longitude) {
 
         if (latitude > 90 || latitude < -90 || longitude > 180 || longitude < -180) {
             throw new IllegalArgumentException("coordinate is out of range.");
@@ -28,23 +28,57 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.longitude = longitude;
     }
 
+
     double getLatitude() {
         return latitude;
     }
+
 
     double getLongitude() {
         return longitude;
     }
 
-    public void visit(Visitor v) {
-        v.visit(this);
+
+    /**
+     * gets a coordinate as a map
+     * @return Map
+     */
+    @Override
+    public Map<String, Double> getCoordinates() {
+        coordinates.put("x", convert().getX());
+        coordinates.put("y", convert().getY());
+        coordinates.put("z", convert().getZ());
+        return coordinates;
     }
 
-    CartesianCoordinate convert(){
 
-        /**
-         * transform spheric coordinate https://de.wikipedia.org/wiki/Kugelkoordinaten
-         */
+    /**
+     * calculates the distance between to coordinates depending on the class
+     * @param coordinate abstract coordinate
+     * @return double
+     */
+    @Override
+    public double getDistance(AbstractCoordinate coordinate) {
+
+        if(coordinate instanceof  SphericCoordinate){
+            return doGetDistance((SphericCoordinate) coordinate);
+
+        } else if( coordinate instanceof CartesianCoordinate){
+            return doGetDistance(coordinate);
+
+        } else {
+            throw new IllegalArgumentException("Not a valid coordinate.");
+        }
+    }
+
+
+    /**
+     * converts a spherical coordinate to a cartesian coordinate
+     * transform spheric coordinate https://de.wikipedia.org/wiki/Kugelkoordinaten
+     * @return CartesianCoordinate
+     */
+    public CartesianCoordinate convert(){
+
         double theta = Math.toRadians(getLatitude());
         double phi = Math.toRadians(getLongitude());
 
@@ -55,6 +89,12 @@ public class SphericCoordinate extends AbstractCoordinate {
         return new CartesianCoordinate(x, y, z);
     }
 
+
+    /**
+     * calculates the distance using orthodrome
+     * @param coordinate spheric coordinate
+     * @return double
+     */
     private double doGetDistance(SphericCoordinate coordinate) {
 
         double phiA = Math.toRadians(coordinate.getLatitude());
@@ -75,85 +115,4 @@ public class SphericCoordinate extends AbstractCoordinate {
         return SphericCoordinate.EARTH_RADIUS_KM * Math.acos(val);
     }
 
-
-
-
-    @Override
-    public double getDistance(AbstractCoordinate abstractCoordinate) {
-
-        Visitor visitor = new Visitor() {
-            double distance;
-
-            @Override
-            public double getDistance() {
-                return distance;
-            }
-
-            @Override
-            public boolean isEqual() {
-                return false;
-            }
-
-            @Override
-            public void visit(CartesianCoordinate cartesianCoordinate) {
-                SphericCoordinate sphericCoordinate = cartesianCoordinate.convert();
-                distance = doGetDistance(sphericCoordinate);
-            }
-
-            @Override
-            public void visit(SphericCoordinate sphericCoordinate) {
-                distance = doGetDistance(sphericCoordinate);
-            }
-        };
-
-        abstractCoordinate.visit(visitor);
-        return visitor.getDistance();
-    }
-
-    private boolean doIsEqual(SphericCoordinate sphericCoordinate) {
-
-        if (this == sphericCoordinate)
-            return true;
-
-        if (sphericCoordinate == null)
-            return false;
-
-        if (getClass() != sphericCoordinate.getClass())
-            return false;
-
-        return Objects.equals(latitude, sphericCoordinate.getLatitude())
-                && Objects.equals(longitude, sphericCoordinate.getLongitude());
-    }
-
-    @Override
-    public boolean isEqual(AbstractCoordinate coordinate) {
-
-        Visitor visitor = new Visitor() {
-
-            boolean isEqual;
-
-            @Override
-            public double getDistance() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEqual() {
-                return isEqual;
-            }
-
-            @Override
-            public void visit(CartesianCoordinate cartesianCoordinate) {
-                isEqual = false;
-            }
-
-            @Override
-            public void visit(SphericCoordinate sphericCoordinate) {
-                isEqual = doIsEqual(sphericCoordinate);
-            }
-        };
-
-        coordinate.visit(visitor);
-        return visitor.isEqual();
-    }
 }
