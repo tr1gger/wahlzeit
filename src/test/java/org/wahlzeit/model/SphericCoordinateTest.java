@@ -13,6 +13,7 @@ public class SphericCoordinateTest {
 
     SphericCoordinate berlin;
     SphericCoordinate tokyo;
+    SphericCoordinate center;
 
     CartesianCoordinate cartesianCoordinate;
 
@@ -20,6 +21,11 @@ public class SphericCoordinateTest {
     public void setUp(){
         berlin = new SphericCoordinate(52.517 , 13.40);
         tokyo = new SphericCoordinate(35.70 , 139.767);
+
+        /**
+         * Spheric Coordinate with radius 0
+         */
+        center = new SphericCoordinate(0, 0, 0);
 
         cartesianCoordinate = new CartesianCoordinate(10, 10, 10);
     }
@@ -34,10 +40,15 @@ public class SphericCoordinateTest {
 
         double lat = 0;
         double lng = 90;
+        double radius = 0;
 
         SphericCoordinate sphericCoordinate = new SphericCoordinate(lat, lng);
         assertEquals(lat, sphericCoordinate.getLatitude(), epsilon);
         assertEquals(lng, sphericCoordinate.getLongitude(), epsilon);
+
+        SphericCoordinate centerCoordinate = new SphericCoordinate(lat, lng, radius);
+        assertEquals(radius, centerCoordinate.getRadius(), epsilon);
+
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -94,6 +105,4 @@ public class SphericCoordinateTest {
         assertFalse(berlin.isEqual(cartesianCoordinate));
         assertFalse(cartesianCoordinate.isEqual(berlin));
     }
-
-
 }

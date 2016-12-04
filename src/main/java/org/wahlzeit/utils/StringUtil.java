@@ -152,7 +152,7 @@ public class StringUtil {
 	public final static String pathAsUrlString(String path) {
 		if (!File.separator.equals(URL_SEPARATOR)) {
 			// We are not on a platform where file separator matches the url separator,
-			// we need to convert between them.
+			// we need to convertToSphericCoordinate between them.
 			path = path.replaceAll(Pattern.quote(File.separator), Matcher.quoteReplacement(URL_SEPARATOR));
 		}
 		return path;

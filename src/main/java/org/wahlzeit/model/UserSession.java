@@ -132,7 +132,7 @@ public class UserSession extends Session implements Serializable {
 	}
 
 	/**
-	 * @methodtype convert Returns some signifier of current user
+	 * @methodtype convertToSphericCoordinate Returns some signifier of current user
 	 */
 	public String getClientId() {
 		return (String) httpSession.getAttribute(CLIENT_ID);
