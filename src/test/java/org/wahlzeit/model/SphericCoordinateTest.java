@@ -8,8 +8,9 @@ import static org.junit.Assert.*;
 
 public class SphericCoordinateTest {
 
-    double berlinTokyoDistance = 8918.95;
     double epsilon = 1E-4;
+
+    double berlinTokyo = 7959.4152d;
 
     SphericCoordinate berlin;
     SphericCoordinate tokyo;
@@ -72,25 +73,9 @@ public class SphericCoordinateTest {
 
     @Test
     public void testGetDistance(){
-
-        SphericCoordinate northPole = new SphericCoordinate(0, 90);
-        SphericCoordinate southPole = new SphericCoordinate(0, -90);
-
-        /**
-         * distance between berlin and tokyo
-         */
-        assertEquals(berlinTokyoDistance, berlin.getDistance(tokyo), epsilon);
-        assertEquals(tokyo.getDistance(berlin), berlin.getDistance(tokyo), 0);
-
-        /**
-         * meridian by distance between north and south pole
-         */
-        assertEquals(SphericCoordinate.EARTH_RADIUS_KM * Math.PI, northPole.getDistance(southPole), 0);
-
-        /**
-         * earth radius by distance between north and south pole
-         */
-        assertEquals(SphericCoordinate.EARTH_RADIUS_KM, southPole.getDistance(northPole) / (Math.PI), 0);
+        assertEquals(berlinTokyo, berlin.getDistance(tokyo), epsilon);
+        assertEquals(berlinTokyo, tokyo.getDistance(berlin), epsilon);
+        assertEquals(0, tokyo.getDistance(tokyo), epsilon);
     }
 
     @Test
