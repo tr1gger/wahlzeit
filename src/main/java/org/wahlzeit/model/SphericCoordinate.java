@@ -1,9 +1,17 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.Exceptions.InvalidCoordinateException;
+import org.wahlzeit.Exceptions.InvalidDoubleException;
+import org.wahlzeit.Exceptions.InvalidSphericRangeException;
+
+import java.util.logging.Logger;
+
 /**
  * class represents SphericCoordinate on earth
  */
 public class SphericCoordinate extends AbstractCoordinate {
+
+    private static final Logger log = Logger.getLogger(SphericCoordinate.class.getName());
 
     static final double EARTH_RADIUS_KM = 6371;
 
@@ -17,11 +25,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param latitude  latitude > 0 north, latitude < 0 south
      * @param longitude longitude > 0 east, longitude < 0 west
      */
-    public SphericCoordinate(double latitude, double longitude) {
+    public SphericCoordinate(double latitude, double longitude) throws InvalidCoordinateException {
         assert classInvariants();
-
-        assert isValidDouble(latitude);
-        assert isValidDouble(longitude);
 
         this.latitude = latitude;
         this.longitude = longitude;
@@ -35,11 +40,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param longitude longitude > 0 east, longitude < 0 west
      * @param radius radius >= 0
      */
-    public SphericCoordinate(double latitude, double longitude, double radius) {
+    public SphericCoordinate(double latitude, double longitude, double radius) throws InvalidCoordinateException {
         this(latitude, longitude);
-
         assert classInvariants();
-        assert isValidDouble(radius);
 
         this.radius = radius;
 
@@ -48,17 +51,17 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     double getX() {
-        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.cos(Math.toRadians(longitude));
+        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(getLatitude())) * Math.cos(Math.toRadians(getLongitude()));
     }
 
     @Override
     double getY() {
-        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.sin(Math.toRadians(longitude));
+        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(getLatitude())) * Math.sin(Math.toRadians(getLongitude()));
     }
 
     @Override
     double getZ() {
-        return EARTH_RADIUS_KM * Math.cos(Math.toRadians(latitude));
+        return EARTH_RADIUS_KM * Math.cos(Math.toRadians(getLatitude()));
     }
 
     double getLatitude() {
@@ -78,11 +81,8 @@ public class SphericCoordinate extends AbstractCoordinate {
      * transform spheric coordinate https://de.wikipedia.org/wiki/Kugelkoordinaten
      * @return CartesianCoordinate
      */
-    public CartesianCoordinate convertToCartesianCoordinate(){
+    public CartesianCoordinate convertToCartesianCoordinate() throws InvalidCoordinateException {
         assert classInvariants();
-
-        assert isValidDouble(getLatitude());
-        assert isValidDouble(getLongitude());
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(getX(), getY(), getZ());
 
@@ -95,16 +95,22 @@ public class SphericCoordinate extends AbstractCoordinate {
      * specific class invariant for spheric coordinate considering borders of lat, long and radius
      * @return boolean
      */
-    public boolean classInvariants() {
-
-        return isValidDouble(latitude) && isValidDouble(longitude) && isValidDouble(radius) && isValidRadius() && isValidSphericRange() && super.classInvariants();
+    public boolean classInvariants() throws InvalidCoordinateException {
+        try {
+            return isValidDouble(latitude) && isValidDouble(longitude) && isValidDouble(radius) && isValidRadius() && isValidSphericRange() && super.classInvariants();
+        } catch (InvalidDoubleException e) {
+            e.printStackTrace();
+        } catch (InvalidSphericRangeException e) {
+            log.warning(e.getMessage());
+        }
+        return false;
     }
 
     /**
      * checks if the radius is valid
      * @return boolean
      */
-    private boolean isValidRadius(){
+    private boolean isValidRadius() throws IllegalArgumentException{
         if(radius >= 0){
             return true;
         } else {
@@ -116,9 +122,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * checks ranges of the field variables
      * @return boolean
      */
-    private boolean isValidSphericRange(){
+    private boolean isValidSphericRange() throws InvalidSphericRangeException {
         if (latitude > 90 || latitude < -90 || longitude > 180 || longitude < -180) {
-            throw new IllegalArgumentException("coordinate is out of range.");
+            throw new InvalidSphericRangeException("coordinate is out of range.");
         } else {
             return true;
         }

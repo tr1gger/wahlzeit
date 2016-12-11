@@ -1,5 +1,7 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.Exceptions.InvalidCoordinateException;
+
 public class CartesianCoordinate extends AbstractCoordinate {
 
     double x;
@@ -11,7 +13,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param y in KM
      * @param z in KM
      */
-    public CartesianCoordinate(double x, double y, double z) {
+    public CartesianCoordinate(double x, double y, double z) throws InvalidCoordinateException {
         assert classInvariants();
 
         this.x = x;
@@ -41,7 +43,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * converts a cartesian coordinate to a spherical coordinate
      * @return SphericCoordinate
      */
-    public SphericCoordinate convertToSphericCoordinate() {
+    public SphericCoordinate convertToSphericCoordinate()throws InvalidCoordinateException {
         assert classInvariants();
 
         /**
@@ -52,9 +54,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
         double y = getY();
         double z = getZ();
 
-        assert isValidDouble(x);
-        assert isValidDouble(y);
-        assert isValidDouble(z);
         assert x != 0 && y != 0 : "x and y must be not null to convertToSphericCoordinate to spheric coordinate";
 
         double phi;
@@ -69,9 +68,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         double argTan = z / Math.sqrt(x * x + y * y);
         double lambda = Math.PI / 2 - Math.atan(argTan);
-
-        assert isValidDouble(lambda);
-        assert isValidDouble(phi);
 
         SphericCoordinate sphericCoordinate = new SphericCoordinate(Math.toDegrees(lambda), Math.toDegrees(phi));
 
