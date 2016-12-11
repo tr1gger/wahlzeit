@@ -2,34 +2,38 @@ package org.wahlzeit.model;
 
 public class CartesianCoordinate extends AbstractCoordinate {
 
+    double x;
+    double y;
+    double z;
+
     /**
      * @param x in KM
      * @param y in KM
      * @param z in KM
      */
     public CartesianCoordinate(double x, double y, double z) {
+        assert classInvariants();
+
         this.x = x;
         this.y = y;
         this.z = z;
+
+        assert classInvariants();
     }
 
-    /**
-     * calculates the shortest distance between two coordinates
-     * @param coordinate abstract coordinate
-     * @return double
-     */
     @Override
-    public double getDistance(AbstractCoordinate coordinate) {
-        assert classInvariants();
-        assert isNotNullCoordinate(coordinate);
-        assert isValidCoordinate(coordinate);
+    public double getX() {
+        return x;
+    }
 
-        double distance = super.getDistance(coordinate);
+    @Override
+    public double getY() {
+        return y;
+    }
 
-        assert isValidDouble(distance);
-        assert classInvariants();
-
-        return distance;
+    @Override
+    public double getZ() {
+        return z;
     }
 
 
