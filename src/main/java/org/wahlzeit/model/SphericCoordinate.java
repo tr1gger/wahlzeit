@@ -22,17 +22,17 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         assert isValidDouble(latitude);
         assert isValidDouble(longitude);
-        assert isValidDouble(convertToCartesianCoordinate().getX());
-        assert isValidDouble(convertToCartesianCoordinate().getY());
-        assert isValidDouble(convertToCartesianCoordinate().getZ());
+
 
         this.latitude = latitude;
         this.longitude = longitude;
         this.radius = EARTH_RADIUS_KM;
 
-        this.x = convertToCartesianCoordinate().getX();
-        this.y = convertToCartesianCoordinate().getY();
-        this.z = convertToCartesianCoordinate().getZ();
+        CartesianCoordinate cartesianCoordinate = convertToCartesianCoordinate();
+
+        this.x = cartesianCoordinate.getX();
+        this.y = cartesianCoordinate.getY();
+        this.z = cartesianCoordinate.getZ();
 
         assert classInvariants();
     }
@@ -69,31 +69,6 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * calculates the distance between to coordinates depending on the class
-     * @param coordinate abstract coordinate
-     * @return double
-     */
-    @Override
-    public double getDistance(AbstractCoordinate coordinate) {
-        assert classInvariants();
-        assert isNotNullCoordinate(coordinate);
-        assert isValidCoordinate(coordinate);
-
-        double distance;
-        if(coordinate instanceof SphericCoordinate){
-            distance = doGetDistance((SphericCoordinate) coordinate);
-        } else{
-            distance = super.getDistance(coordinate);
-        }
-
-        assert isValidDouble(distance);
-        assert classInvariants();
-
-        return distance;
-    }
-
-
-    /**
      * converts a spherical coordinate to a cartesian coordinate
      * transform spheric coordinate https://de.wikipedia.org/wiki/Kugelkoordinaten
      * @return CartesianCoordinate
@@ -124,45 +99,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 
     /**
-     * calculates the distance using orthodrome
-     * @param coordinate spheric coordinate
-     * @return double
-     */
-    private double doGetDistance(SphericCoordinate coordinate) {
-        assert classInvariants();
-        assert isNotNullCoordinate(coordinate);
-        assert isValidCoordinate(coordinate);
-        assert hasSameRadius(coordinate.getRadius());
-
-        double phiA = Math.toRadians(coordinate.getLatitude());
-        double lambdaA = Math.toRadians(coordinate.getLongitude());
-
-        double phiB = Math.toRadians(latitude);
-        double lambdaB = Math.toRadians(longitude);
-
-        /**
-         * Formula for calculating distance between two points on a round sphere
-         * https://de.wikipedia.org/wiki/Orthodrome
-         */
-
-        double val = Math.sin(phiA) * Math.sin(phiB)
-                + Math.cos(phiA) * Math.cos(phiB) *
-                Math.cos(lambdaA - lambdaB);
-
-        double distance = radius * Math.acos(val);
-
-        assert isValidDouble(distance);
-        assert classInvariants();
-
-        return distance;
-    }
-
-
-    /**
      * specific class invariant for spheric coordinate considering borders of lat, long and radius
      * @return boolean
      */
     public boolean classInvariants() {
+
         return isValidDouble(latitude) && isValidDouble(longitude) && isValidDouble(radius) && isValidRadius() && isValidSphericRange() && super.classInvariants();
     }
 
@@ -190,16 +131,4 @@ public class SphericCoordinate extends AbstractCoordinate {
         }
     }
 
-    /**
-     * checks if the radius for an other spheric coordinate has the same value
-     * @param radius radius
-     * @return boolean
-     */
-    private boolean hasSameRadius(double radius){
-        if(this.radius == radius){
-            return true;
-        } else {
-            throw new IllegalArgumentException("Radius must be the same.");
-        }
-    }
 }
