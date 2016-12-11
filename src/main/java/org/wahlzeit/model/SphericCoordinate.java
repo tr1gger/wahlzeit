@@ -9,7 +9,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     private double latitude;
     private double longitude;
-    private double radius;
+    private double radius = EARTH_RADIUS_KM;
 
     /**
      * latitude must be between -90 and 90 && longitude must be between -180 and 180 degree
@@ -23,20 +23,11 @@ public class SphericCoordinate extends AbstractCoordinate {
         assert isValidDouble(latitude);
         assert isValidDouble(longitude);
 
-
         this.latitude = latitude;
         this.longitude = longitude;
-        this.radius = EARTH_RADIUS_KM;
-
-        CartesianCoordinate cartesianCoordinate = convertToCartesianCoordinate();
-
-        this.x = cartesianCoordinate.getX();
-        this.y = cartesianCoordinate.getY();
-        this.z = cartesianCoordinate.getZ();
 
         assert classInvariants();
     }
-
 
     /**
      * constructor for spheric coordinates and variable radius
@@ -55,6 +46,20 @@ public class SphericCoordinate extends AbstractCoordinate {
         assert classInvariants();
     }
 
+    @Override
+    double getX() {
+        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.cos(Math.toRadians(longitude));
+    }
+
+    @Override
+    double getY() {
+        return  EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.sin(Math.toRadians(longitude));
+    }
+
+    @Override
+    double getZ() {
+        return EARTH_RADIUS_KM * Math.cos(Math.toRadians(latitude));
+    }
 
     double getLatitude() {
         return latitude;
@@ -78,20 +83,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         assert isValidDouble(getLatitude());
         assert isValidDouble(getLongitude());
-        assert isValidSphericRange();
 
-        double theta = Math.toRadians(getLatitude());
-        double phi = Math.toRadians(getLongitude());
-
-        double x = EARTH_RADIUS_KM * Math.sin(theta) * Math.cos(phi);
-        double y = EARTH_RADIUS_KM * Math.sin(theta) * Math.sin(phi);
-        double z = EARTH_RADIUS_KM * Math.cos(theta);
-
-        assert isValidDouble(x);
-        assert isValidDouble(y);
-        assert isValidDouble(z);
-
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(getX(), getY(), getZ());
 
         assert classInvariants();
         return cartesianCoordinate;

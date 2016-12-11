@@ -3,22 +3,11 @@ import java.util.Objects;
 
 abstract class AbstractCoordinate implements Coordinate {
 
-    double x;
-    double y;
-    double z;
+    abstract double getX();
 
+    abstract double getY();
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getZ() {
-        return z;
-    }
+    abstract double getZ();
 
     /**
      * checks if two coordinates are equal
@@ -28,11 +17,6 @@ abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public boolean isEqual(AbstractCoordinate coordinate) {
-        assert classInvariants();
-
-        assert isNotNullCoordinate(coordinate);
-        assert isValidCoordinate(coordinate);
-
         if (this == coordinate)
             return true;
 
@@ -42,9 +26,6 @@ abstract class AbstractCoordinate implements Coordinate {
         boolean isEqual = Objects.equals(getX(), coordinate.getX())
                 && Objects.equals(getY(), coordinate.getY())
                 && Objects.equals(getZ(), coordinate.getZ());
-
-        assert isValidCoordinate(coordinate);
-        assert classInvariants();
 
         return isEqual;
     }
@@ -58,6 +39,7 @@ abstract class AbstractCoordinate implements Coordinate {
     public double getDistance(AbstractCoordinate coordinate) {
         assert classInvariants();
         assert isNotNullCoordinate(coordinate);
+        assert isValidCoordinate(coordinate);
 
         /**
          * Euclidean distance
@@ -66,10 +48,6 @@ abstract class AbstractCoordinate implements Coordinate {
         double x = coordinate.getX();
         double y = coordinate.getY();
         double z = coordinate.getZ();
-
-        assert isValidDouble(x);
-        assert isValidDouble(y);
-        assert isValidDouble(z);
 
         double deltaX = this.getX() - x;
         double deltaY = this.getY() - y;
