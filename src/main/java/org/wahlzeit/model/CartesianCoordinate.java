@@ -14,13 +14,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param z in KM
      */
     public CartesianCoordinate(double x, double y, double z) throws InvalidCoordinateException {
-        assert classInvariants();
+        classInvariants();
 
         this.x = x;
         this.y = y;
         this.z = z;
 
-        assert classInvariants();
+        classInvariants();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @return SphericCoordinate
      */
     public SphericCoordinate convertToSphericCoordinate()throws InvalidCoordinateException {
-        assert classInvariants();
+        classInvariants();
 
         /**
          * transformation of cartesian coordinates into spherical
@@ -71,7 +71,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         SphericCoordinate sphericCoordinate = new SphericCoordinate(Math.toDegrees(lambda), Math.toDegrees(phi));
 
-        assert classInvariants();
+        classInvariants();
         return sphericCoordinate;
     }
 

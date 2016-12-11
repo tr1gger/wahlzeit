@@ -40,7 +40,7 @@ abstract class AbstractCoordinate implements Coordinate {
      * @return double
      */
     @Override
-    public double getDistance(AbstractCoordinate coordinate) throws InvalidCoordinateException, InvalidDoubleException {
+    public double getDistance(AbstractCoordinate coordinate) throws InvalidCoordinateException {
         classInvariants();
         isNotNullCoordinate(coordinate);
         isValidCoordinate(coordinate);

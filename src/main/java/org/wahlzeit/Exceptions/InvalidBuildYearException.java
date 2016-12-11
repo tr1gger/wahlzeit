@@ -1,8 +1,5 @@
 package org.wahlzeit.Exceptions;
 
-/**
- * Created by robert on 11.12.16.
- */
 public class InvalidBuildYearException extends Exception {
 
     public InvalidBuildYearException(){

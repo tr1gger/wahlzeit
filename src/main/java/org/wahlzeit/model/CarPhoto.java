@@ -13,18 +13,20 @@ public class CarPhoto extends Photo {
 
     private int buildYear;
 
-
     public CarPhoto(){
         super();
     }
 
     public CarPhoto(int buildYear) throws InvalidBuildYearException {
         super();
-
         assertBuildYear(buildYear);
     }
 
 
+    /**
+     * @param buildYear year of the car build
+     * @throws InvalidBuildYearException
+     */
     public void assertBuildYear(int buildYear) throws InvalidBuildYearException{
         if(buildYear < 0){
             throw new InvalidBuildYearException("Build year of the car must be greater than 0");

@@ -26,12 +26,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param longitude longitude > 0 east, longitude < 0 west
      */
     public SphericCoordinate(double latitude, double longitude) throws InvalidCoordinateException {
-        assert classInvariants();
+        classInvariants();
 
         this.latitude = latitude;
         this.longitude = longitude;
 
-        assert classInvariants();
+        classInvariants();
     }
 
     /**
@@ -42,11 +42,11 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     public SphericCoordinate(double latitude, double longitude, double radius) throws InvalidCoordinateException {
         this(latitude, longitude);
-        assert classInvariants();
+        classInvariants();
 
         this.radius = radius;
 
-        assert classInvariants();
+        classInvariants();
     }
 
     @Override
@@ -82,11 +82,11 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return CartesianCoordinate
      */
     public CartesianCoordinate convertToCartesianCoordinate() throws InvalidCoordinateException {
-        assert classInvariants();
+        classInvariants();
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(getX(), getY(), getZ());
 
-        assert classInvariants();
+        classInvariants();
         return cartesianCoordinate;
     }
 
@@ -99,11 +99,11 @@ public class SphericCoordinate extends AbstractCoordinate {
         try {
             return isValidDouble(latitude) && isValidDouble(longitude) && isValidDouble(radius) && isValidRadius() && isValidSphericRange() && super.classInvariants();
         } catch (InvalidDoubleException e) {
-            e.printStackTrace();
+            log.warning(e.getMessage());
         } catch (InvalidSphericRangeException e) {
             log.warning(e.getMessage());
         }
-        return false;
+        throw new InvalidCoordinateException("Not a valid coordinate, check your parameters");
     }
 
     /**
