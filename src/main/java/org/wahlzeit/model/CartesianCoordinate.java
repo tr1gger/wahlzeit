@@ -38,41 +38,4 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return z;
     }
 
-
-    /**
-     * converts a cartesian coordinate to a spherical coordinate
-     * @return SphericCoordinate
-     */
-    public SphericCoordinate convertToSphericCoordinate()throws InvalidCoordinateException {
-        classInvariants();
-
-        /**
-         * transformation of cartesian coordinates into spherical
-         * further information http://www.mathepedia.de/Kugelkoordinaten.aspx
-         */
-        double x = getX();
-        double y = getY();
-        double z = getZ();
-
-        assert x != 0 && y != 0 : "x and y must be not null to convertToSphericCoordinate to spheric coordinate";
-
-        double phi;
-        double argPhi = x / (Math.sqrt(x * x + y * y));
-        double acos = Math.acos(argPhi);
-
-        if (y >= 0) {
-            phi = acos;
-        } else {
-            phi = 2 * Math.PI - acos;
-        }
-
-        double argTan = z / Math.sqrt(x * x + y * y);
-        double lambda = Math.PI / 2 - Math.atan(argTan);
-
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(Math.toDegrees(lambda), Math.toDegrees(phi));
-
-        classInvariants();
-        return sphericCoordinate;
-    }
-
 }
