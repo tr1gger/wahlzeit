@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import org.junit.Test;
+import org.wahlzeit.Exceptions.InvalidCoordinateException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +16,12 @@ public class LocationTest {
     @Test
     public void testConstructor(){
 
-        SphericCoordinate berlin = new SphericCoordinate(lat , lng);
+        SphericCoordinate berlin = null;
+        try {
+            berlin = new SphericCoordinate(lat , lng);
+        } catch (InvalidCoordinateException e) {
+            e.printStackTrace();
+        }
         Location location = new Location(berlin);
 
         SphericCoordinate coordinate = (SphericCoordinate) location.getCoordinate();

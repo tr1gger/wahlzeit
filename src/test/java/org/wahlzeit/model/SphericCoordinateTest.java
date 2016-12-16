@@ -3,10 +3,15 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.Exceptions.InvalidCoordinateException;
+
+import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
 public class SphericCoordinateTest {
+
+    private static final Logger log = Logger.getLogger(SphericCoordinateTest.class.getName());
 
     double epsilon = 1E-4;
 
@@ -20,15 +25,23 @@ public class SphericCoordinateTest {
 
     @Before
     public void setUp(){
-        berlin = new SphericCoordinate(52.517 , 13.40);
-        tokyo = new SphericCoordinate(35.70 , 139.767);
+        try {
+            tokyo = new SphericCoordinate(35.70 , 139.767);
+            berlin = new SphericCoordinate(52.517 , 13.40);
+        } catch (InvalidCoordinateException e) {
+            log.warning(e.getMessage());
+        }
 
         /**
          * Spheric Coordinate with radius 0
          */
-        center = new SphericCoordinate(0, 0, 0);
+        try {
+            cartesianCoordinate = new CartesianCoordinate(10, 10, 10);
+            center = new SphericCoordinate(0, 0, 0);
+        } catch (InvalidCoordinateException e) {
+            log.warning(e.getMessage());
+        }
 
-        cartesianCoordinate = new CartesianCoordinate(10, 10, 10);
     }
 
     @Test
@@ -43,17 +56,27 @@ public class SphericCoordinateTest {
         double lng = 90;
         double radius = 0;
 
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(lat, lng);
+        SphericCoordinate sphericCoordinate = null;
+        try {
+            sphericCoordinate = new SphericCoordinate(lat, lng);
+        } catch (InvalidCoordinateException e) {
+            log.warning(e.getMessage());
+        }
         assertEquals(lat, sphericCoordinate.getLatitude(), epsilon);
         assertEquals(lng, sphericCoordinate.getLongitude(), epsilon);
 
-        SphericCoordinate centerCoordinate = new SphericCoordinate(lat, lng, radius);
+        SphericCoordinate centerCoordinate = null;
+        try {
+            centerCoordinate = new SphericCoordinate(lat, lng, radius);
+        } catch (InvalidCoordinateException e) {
+            log.warning(e.getMessage());
+        }
         assertEquals(radius, centerCoordinate.getRadius(), epsilon);
 
     }
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testConstructorLatRange() {
+    @Test(expected=InvalidCoordinateException.class)
+    public void testConstructorLatRange() throws InvalidCoordinateException {
 
         double lat = 91;
         double lng = 0;
@@ -62,8 +85,8 @@ public class SphericCoordinateTest {
     }
 
 
-    @Test(expected=IllegalArgumentException.class)
-    public void testConstructorLngRange() {
+    @Test(expected=InvalidCoordinateException.class)
+    public void testConstructorLngRange() throws InvalidCoordinateException {
 
         double lat = 0;
         double lng = 181;
@@ -73,9 +96,14 @@ public class SphericCoordinateTest {
 
     @Test
     public void testGetDistance(){
-        assertEquals(berlinTokyo, berlin.getDistance(tokyo), epsilon);
-        assertEquals(berlinTokyo, tokyo.getDistance(berlin), epsilon);
-        assertEquals(0, tokyo.getDistance(tokyo), epsilon);
+        try {
+            assertEquals(berlinTokyo, berlin.getDistance(tokyo), epsilon);
+            assertEquals(berlinTokyo, tokyo.getDistance(berlin), epsilon);
+            assertEquals(0, tokyo.getDistance(tokyo), epsilon);
+        } catch (InvalidCoordinateException e) {
+            log.warning(e.getMessage());
+        }
+
     }
 
     @Test

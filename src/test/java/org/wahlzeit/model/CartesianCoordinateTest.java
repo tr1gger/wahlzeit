@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.Exceptions.InvalidCoordinateException;
 
 import static org.junit.Assert.*;
 
@@ -22,9 +23,14 @@ public class CartesianCoordinateTest {
 
     @Before
     public void setUp(){
-        cartesianCoordinateA = new CartesianCoordinate(0, 0, 0);
-        cartesianCoordinateB = new CartesianCoordinate(10, 10, 10);
-        sphericCoordinate = new SphericCoordinate(10, 10);
+        try {
+            cartesianCoordinateA = new CartesianCoordinate(0, 0, 0);
+            cartesianCoordinateB = new CartesianCoordinate(10, 10, 10);
+            sphericCoordinate = new SphericCoordinate(10, 10);
+        } catch (InvalidCoordinateException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
@@ -42,7 +48,11 @@ public class CartesianCoordinateTest {
 
     @Test
     public void testGetDistance(){
-        assertEquals(17.3205, cartesianCoordinateA.getDistance(cartesianCoordinateB), 10E-4);
+        try {
+            assertEquals(17.3205, cartesianCoordinateA.getDistance(cartesianCoordinateB), 10E-4);
+        } catch (InvalidCoordinateException e) {
+            e.printStackTrace();
+        }
     }
 
 }
