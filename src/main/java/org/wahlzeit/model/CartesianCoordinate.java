@@ -23,16 +23,25 @@ public class CartesianCoordinate extends AbstractCoordinate {
         classInvariants();
     }
 
+    /**
+     * @methodtype get
+     */
     @Override
     public double getX() {
         return x;
     }
 
+    /**
+     * @methodtype get
+     */
     @Override
     public double getY() {
         return y;
     }
 
+    /**
+     * @methodtype get
+     */
     @Override
     public double getZ() {
         return z;

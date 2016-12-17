@@ -1,9 +1,13 @@
 package org.wahlzeit.model;
+
 import org.wahlzeit.Exceptions.InvalidCoordinateException;
 import org.wahlzeit.Exceptions.InvalidDoubleException;
 
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import static org.wahlzeit.utils.Asserts.assertNotNull;
+import static org.wahlzeit.utils.Asserts.assertValidDouble;
 
 abstract class AbstractCoordinate implements Coordinate {
 
@@ -22,9 +26,13 @@ abstract class AbstractCoordinate implements Coordinate {
      * @return boolean
      */
     @Override
-    public boolean isEqual(AbstractCoordinate coordinate) {
-        if (this == coordinate)
+    public boolean isEqual(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+        assertNotNull(coordinate);
+        assertValidCoordinate(coordinate);
+
+        if (this == coordinate) {
             return true;
+        }
 
         if (getClass() != coordinate.getClass())
             return false;
@@ -41,9 +49,8 @@ abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public double getDistance(AbstractCoordinate coordinate) throws InvalidCoordinateException {
-        classInvariants();
-        isNotNullCoordinate(coordinate);
-        isValidCoordinate(coordinate);
+        assertNotNull(coordinate);
+        assertValidCoordinate(coordinate);
 
         /**
          * Euclidean distance
@@ -57,65 +64,32 @@ abstract class AbstractCoordinate implements Coordinate {
         double deltaY = this.getY() - y;
         double deltaZ = this.getZ() - z;
 
-        double result = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-
-        classInvariants();
-        return result;
-    }
-
-    /**
-     * checks if coordinate is null
-     * @param coordinate abstract coordinate
-     * @return boolean
-     */
-    protected boolean isNotNullCoordinate(AbstractCoordinate coordinate) {
-        if(coordinate != null){
-            return true;
-        } else {
-            throw new IllegalArgumentException("Coordinate must not be null");
-        }
+        return  Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
     }
 
     /**
      * checks if the coordinate is valid
      * @param coordinate abstract coordinate
-     * @return boolean
      */
-    protected boolean isValidCoordinate(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+    protected void assertValidCoordinate(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+        assertNotNull(coordinate);
+
         try {
-            if(isValidDouble(coordinate.getX()) && isValidDouble(coordinate.getY()) && isValidDouble(coordinate.getZ())){
-                return true;
-            } else {
-                throw new InvalidCoordinateException("Coordinate is not valid");
-            }
+            assertValidDouble(coordinate.getX());
+            assertValidDouble(coordinate.getY());
+            assertValidDouble(coordinate.getZ());
         } catch (InvalidDoubleException e) {
             log.warning(e.getMessage());
+            throw new InvalidCoordinateException("Coordinate is not valid");
         }
-        return false;
     }
 
-    /**
-     * check if the parameter is a finite double value and a number
-     * @param val double value
-     * @return boolean
-     */
-    protected boolean isValidDouble(double val) throws InvalidDoubleException{
-        if (!Double.isInfinite(val) && !Double.isNaN(val))
-            return true;
-        else
-           throw new InvalidDoubleException();
-    }
 
     /**
      * condition which muss be full-filled at all time
-     * @return boolean
      */
-    protected boolean classInvariants() throws InvalidCoordinateException {
-        if(isValidCoordinate(this)){
-            return true;
-        } else {
-            throw new IllegalStateException("AbstractCoordinate invariants are not satisfied");
-        }
+    protected void classInvariants() throws InvalidCoordinateException {
+        assertValidCoordinate(this);
     }
 }
 

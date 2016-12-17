@@ -3,54 +3,61 @@ package org.wahlzeit.model;
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.Exceptions.InvalidBuildYearException;
 
+import static org.wahlzeit.utils.Asserts.*;
 
 @Subclass
 public class CarPhoto extends Photo {
 
-    private String brand;
-
-    private String model;
+    private CarBrand brand;
+    private CarModel model;
 
     private int buildYear;
 
+
+    /**
+     * default constructor
+     */
     public CarPhoto(){
         super();
     }
 
-    public CarPhoto(int buildYear) throws InvalidBuildYearException {
-        super();
-        assertBuildYear(buildYear);
-    }
-
-
     /**
-     * @param buildYear year of the car build
-     * @throws InvalidBuildYearException
+     * constructor with id
      */
-    public void assertBuildYear(int buildYear) throws InvalidBuildYearException{
-        if(buildYear < 0){
-            throw new InvalidBuildYearException("Build year of the car must be greater than 0");
-        }
-    }
-
     public CarPhoto(PhotoId id){
         super(id);
     }
 
+    /**
+     * custom constructor
+     */
+    public CarPhoto(int buildYear, CarBrand carBrand, CarModel carModel) throws InvalidBuildYearException {
+        super();
 
-    public String getBrand() {
+        assertBuildYear(buildYear);
+        assertCarBrand(brand.asInt());
+        assertCarModel(model.asInt());
+
+        this.buildYear = buildYear;
+        this.brand = carBrand;
+        this.model = carModel;
+    }
+
+    public CarBrand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(CarBrand brand) {
+        assertCarBrand(brand.asInt());
         this.brand = brand;
     }
 
-    public String getModel() {
+    public CarModel getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(CarModel model) {
+        assertCarModel(model.asInt());
         this.model = model;
     }
 
@@ -58,7 +65,8 @@ public class CarPhoto extends Photo {
         return buildYear;
     }
 
-    public void setBuildYear(int buildYear) {
+    public void setBuildYear(int buildYear) throws InvalidBuildYearException {
+        assertBuildYear(buildYear);
         this.buildYear = buildYear;
     }
 }
