@@ -9,6 +9,7 @@ import static org.wahlzeit.utils.Asserts.*;
 public class CarPhoto extends Photo {
 
     private CarBrand brand;
+
     private CarModel model;
 
     private int buildYear;
@@ -34,6 +35,8 @@ public class CarPhoto extends Photo {
     public CarPhoto(int buildYear, CarBrand carBrand, CarModel carModel) throws InvalidBuildYearException {
         super();
 
+        if(carBrand == null || carModel == null) throw new IllegalArgumentException("Arguments must not be null");
+
         assertBuildYear(buildYear);
         assertCarBrand(brand.asInt());
         assertCarModel(model.asInt());
@@ -43,28 +46,46 @@ public class CarPhoto extends Photo {
         this.model = carModel;
     }
 
+    /**
+     * @methodtype get
+     */
     public CarBrand getBrand() {
         return brand;
     }
 
+    /**
+     * @methodtype set
+     */
     public void setBrand(CarBrand brand) {
         assertCarBrand(brand.asInt());
         this.brand = brand;
     }
 
+    /**
+     * @methodtype get
+     */
     public CarModel getModel() {
         return model;
     }
 
+    /**
+     * @methodtype set
+     */
     public void setModel(CarModel model) {
         assertCarModel(model.asInt());
         this.model = model;
     }
 
+    /**
+     * @methodtype get
+     */
     public int getBuildYear() {
         return buildYear;
     }
 
+    /**
+     * @methodtype set
+     */
     public void setBuildYear(int buildYear) throws InvalidBuildYearException {
         assertBuildYear(buildYear);
         this.buildYear = buildYear;

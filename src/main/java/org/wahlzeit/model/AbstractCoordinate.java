@@ -3,7 +3,8 @@ package org.wahlzeit.model;
 import org.wahlzeit.Exceptions.InvalidCoordinateException;
 import org.wahlzeit.Exceptions.InvalidDoubleException;
 
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static org.wahlzeit.utils.Asserts.assertNotNull;
@@ -11,44 +12,37 @@ import static org.wahlzeit.utils.Asserts.assertValidDouble;
 
 abstract class AbstractCoordinate implements Coordinate {
 
+    /**
+     *
+     */
     private static final Logger log = Logger.getLogger(AbstractCoordinate.class.getName());
 
-    abstract double getX();
-
-    abstract double getY();
-
-    abstract double getZ();
+    /**
+     *
+     */
+    public static Map<Integer, Coordinate> sharedCoordinate = new HashMap<>();
 
     /**
-     * checks if two coordinates are equal
-     *
-     * @param coordinate abstract coordiante
+     * @methodtype compare
+     * @param coordinate coordinate
      * @return boolean
      */
     @Override
-    public boolean isEqual(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+    public boolean isEqual(Coordinate coordinate) throws InvalidCoordinateException {
         assertNotNull(coordinate);
         assertValidCoordinate(coordinate);
 
-        if (this == coordinate) {
-            return true;
-        }
-
-        if (getClass() != coordinate.getClass())
-            return false;
-
-        return Objects.equals(getX(), coordinate.getX())
-                && Objects.equals(getY(), coordinate.getY())
-                && Objects.equals(getZ(), coordinate.getZ());
+        return this == coordinate;
     }
 
 
     /**
+     * @methodtype get
      * @param coordinate coordinate on earth consisting of x, y and z
      * @return double
      */
     @Override
-    public double getDistance(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+    public double getDistance(Coordinate coordinate) throws InvalidCoordinateException {
         assertNotNull(coordinate);
         assertValidCoordinate(coordinate);
 
@@ -69,9 +63,10 @@ abstract class AbstractCoordinate implements Coordinate {
 
     /**
      * checks if the coordinate is valid
+     * @methodtype assertion
      * @param coordinate abstract coordinate
      */
-    protected void assertValidCoordinate(AbstractCoordinate coordinate) throws InvalidCoordinateException {
+    protected void assertValidCoordinate(Coordinate coordinate) throws InvalidCoordinateException {
         assertNotNull(coordinate);
 
         try {
@@ -86,10 +81,47 @@ abstract class AbstractCoordinate implements Coordinate {
 
 
     /**
+     * returns argument only if this value object has not already been initialized
+     * otherwise the shared object will be returned
+     *
+     * @methodtype get
+     * @return Coordinate
+     */
+    public static Coordinate getInstance(Coordinate coordinate) throws InvalidCoordinateException {
+        int key = coordinate.hashCode();
+        Coordinate result = sharedCoordinate.get(key);
+
+        if(result == null){
+            sharedCoordinate.put(key, coordinate);
+            return coordinate;
+        } else {
+            return result;
+        }
+    }
+
+    /**
      * condition which muss be full-filled at all time
+     * @methodtype assertion
      */
     protected void classInvariants() throws InvalidCoordinateException {
         assertValidCoordinate(this);
+    }
+
+    /**
+     * creates a String representation of a coordinate object
+     * @return String
+     */
+    public String asString(){
+        return getX() + "-" + getY() + "-" + getZ() + "-" + getLatitude() + "-" + getLongitude();
+    }
+
+    /**
+     * uses the string representation to create a unique hash value
+     * @return int
+     */
+    @Override
+    public int hashCode() {
+        return asString().hashCode();
     }
 }
 

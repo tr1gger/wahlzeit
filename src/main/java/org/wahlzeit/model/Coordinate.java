@@ -4,6 +4,21 @@ import org.wahlzeit.Exceptions.InvalidCoordinateException;
 
 public interface Coordinate {
 
-    double getDistance(AbstractCoordinate coordinate) throws InvalidCoordinateException;
-    boolean isEqual(AbstractCoordinate coordinate) throws InvalidCoordinateException;
+    double getDistance(Coordinate coordinate) throws InvalidCoordinateException;
+
+    boolean isEqual(Coordinate coordinate) throws InvalidCoordinateException;
+
+    int hashCode();
+
+    double getX();
+
+    double getY();
+
+    double getZ();
+
+    double getLatitude();
+
+    double getLongitude();
+
+    double getRadius();
 }

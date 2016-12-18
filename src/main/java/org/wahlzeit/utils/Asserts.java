@@ -8,20 +8,28 @@ import org.wahlzeit.model.CarModel;
 
 public class Asserts {
 
-
+    /**
+     * @methodtype assertion
+     */
     public static void assertNotNull(Object arg) {
-        if(arg != null){
+        if(arg == null){
             throw new IllegalArgumentException("Value must not be null");
         }
     }
 
+    /**
+     * @methodtype assertion
+     */
     public static void assertValidDouble(double val) throws InvalidDoubleException {
-        if (!Double.isInfinite(val) && !Double.isNaN(val)){
-            throw new InvalidDoubleException();
+        if (Double.isInfinite(val) || Double.isNaN(val)){
+            throw new InvalidDoubleException(val + " is not a valid double!");
         }
 
     }
 
+    /**
+     * @methodtype assertion
+     */
     public static void assertCarBrand(int i){
         try{
             CarBrand[] values = CarBrand.values();
@@ -32,6 +40,9 @@ public class Asserts {
 
     }
 
+    /**
+     * @methodtype assertion
+     */
     public static void assertCarModel(int i){
         try{
             CarModel[] values = CarModel.values();
@@ -44,8 +55,7 @@ public class Asserts {
 
 
     /**
-     * @param buildYear year of the car build
-     * @throws InvalidBuildYearException
+     * @methodtype assertion
      */
     public static void assertBuildYear(int buildYear) throws InvalidBuildYearException {
         if(buildYear < 0){

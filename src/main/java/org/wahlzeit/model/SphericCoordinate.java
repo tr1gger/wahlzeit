@@ -17,42 +17,30 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     static final double EARTH_RADIUS_KM = 6371;
 
-    private double latitude;
-    private double longitude;
-
-    private double radius;
+    private final double latitude;
+    private final double longitude;
+    private final double radius;
 
     /**
      * latitude must be between -90 and 90 && longitude must be between -180 and 180 degree
-     *
      * @param latitude  latitude > 0 north, latitude < 0 south
      * @param longitude longitude > 0 east, longitude < 0 west
+     * @param radius
      */
-    public SphericCoordinate(double latitude, double longitude) throws InvalidCoordinateException {
-        classInvariants();
+    private SphericCoordinate(double latitude, double longitude, double radius) throws InvalidCoordinateException {
+        assertClassInvariants();
 
         this.latitude = latitude;
         this.longitude = longitude;
-        this.radius = EARTH_RADIUS_KM;
-        classInvariants();
-    }
-
-    /**
-     * constructor for spheric coordinates and variable radius
-     *
-     * @param latitude  latitude > 0 north, latitude < 0 south
-     * @param longitude longitude > 0 east, longitude < 0 west
-     * @param radius    radius >= 0
-     */
-    public SphericCoordinate(double latitude, double longitude, double radius) throws InvalidCoordinateException {
-        this(latitude, longitude);
-        assertClassInvariants();
-
         this.radius = radius;
 
         assertClassInvariants();
     }
 
+    public static Coordinate getInstance(double latitude, double longitude, double radius) throws InvalidCoordinateException {
+        Coordinate sphericCoordinate = new SphericCoordinate(latitude, longitude, radius);
+        return getInstance(sphericCoordinate);
+    }
 
 
     /**
@@ -80,7 +68,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * checks if the radius is valid
      */
     private void assertValidRadius() throws IllegalArgumentException {
-        if (radius >= 0) {
+        if (radius < 0) {
             throw new IllegalArgumentException("Radius must be not negative.");
         }
     }
@@ -100,43 +88,46 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     @Override
-    double getX() {
-        return EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.cos(Math.toRadians(longitude));
+    public double getX() {
+        return radius * Math.sin(Math.toRadians(latitude)) * Math.cos(Math.toRadians(longitude));
     }
 
     /**
      * @methodtype get
      */
     @Override
-    double getY() {
-        return EARTH_RADIUS_KM * Math.sin(Math.toRadians(latitude)) * Math.sin(Math.toRadians(longitude));
+    public double getY() {
+        return radius * Math.sin(Math.toRadians(latitude)) * Math.sin(Math.toRadians(longitude));
     }
 
     /**
      * @methodtype get
      */
     @Override
-    double getZ() {
-        return EARTH_RADIUS_KM * Math.cos(Math.toRadians(latitude));
+    public double getZ() {
+        return radius * Math.cos(Math.toRadians(latitude));
     }
 
     /**
      * @methodtype get
      */
-    double getLatitude() {
+    @Override
+    public double getLatitude() {
         return latitude;
     }
 
     /**
      * @methodtype get
      */
-    double getLongitude() {
+    @Override
+    public double getLongitude() {
         return longitude;
     }
 
     /**
      * @methodtype get
      */
+    @Override
     public double getRadius() {
         return radius;
     }
