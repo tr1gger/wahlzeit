@@ -112,7 +112,7 @@ abstract class AbstractCoordinate implements Coordinate {
      * @return String
      */
     public String asString(){
-        return getX() + "-" + getY() + "-" + getZ() + "-" + getLatitude() + "-" + getLongitude();
+        return getX() + "-" + getY() + "-" + getZ() + "-" + getLatitude() + "-" + getLongitude() + "-" + getRadius();
     }
 
     /**
