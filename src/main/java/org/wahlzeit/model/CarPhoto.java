@@ -2,10 +2,15 @@ package org.wahlzeit.model;
 
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.Exceptions.InvalidBuildYearException;
+import org.wahlzeit.annotation.PatternInstance;
 
 import static org.wahlzeit.utils.Asserts.*;
 
 @Subclass
+@PatternInstance(
+        patternName = "Abstract Factory",
+        participants = {"AbstractProduct", "ConcreteProduct"}
+)
 public class CarPhoto extends Photo {
 
     private CarBrand brand;

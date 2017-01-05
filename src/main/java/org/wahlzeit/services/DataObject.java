@@ -20,12 +20,18 @@
 
 package org.wahlzeit.services;
 
+import org.wahlzeit.annotation.PatternInstance;
+
 import java.io.Serializable;
 
 /**
  * A simple abstract implementation of Persistent with write count and dirty bit.
  * Also defines (but does not use) the field "ID" for subclass use.
  */
+@PatternInstance(
+		patternName = "Abstract Factory",
+		participants = {"AbstractProduct"}
+)
 public abstract class DataObject implements Persistent, Serializable {
 
 	/**
