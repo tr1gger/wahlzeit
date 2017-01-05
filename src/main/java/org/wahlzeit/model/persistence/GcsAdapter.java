@@ -22,14 +22,8 @@ package org.wahlzeit.model.persistence;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.tools.cloudstorage.GcsFileMetadata;
-import com.google.appengine.tools.cloudstorage.GcsFileOptions;
-import com.google.appengine.tools.cloudstorage.GcsFilename;
-import com.google.appengine.tools.cloudstorage.GcsInputChannel;
-import com.google.appengine.tools.cloudstorage.GcsOutputChannel;
-import com.google.appengine.tools.cloudstorage.GcsService;
-import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
-import com.google.appengine.tools.cloudstorage.RetryParams;
+import com.google.appengine.tools.cloudstorage.*;
+import org.wahlzeit.annotation.PatternInstance;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
 
@@ -47,6 +41,10 @@ import java.util.logging.Logger;
  * 
  * @review
  */
+@PatternInstance(
+		patternName = "Adapter",
+		participants = {"Adapter, Service"}
+)
 public class GcsAdapter extends ImageStorage {
 
 	private static final Logger log = Logger.getLogger(GcsAdapter.class.getName());
