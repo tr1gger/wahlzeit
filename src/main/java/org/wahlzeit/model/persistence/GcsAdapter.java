@@ -149,7 +149,10 @@ public class GcsAdapter extends ImageStorage {
 		return new GcsFilename(bucketName, filePath);
 	}
 
-
+	@PatternInstance(
+			patternName = "Adapter",
+			participants = {"Service"}
+	)
 	public static class Builder {
 		GcsService gcsService;
 		private String bucketName;
