@@ -19,6 +19,7 @@ public class CarPhoto extends Photo {
 
     private int buildYear;
 
+    private Car car;
 
     /**
      * default constructor
@@ -37,7 +38,7 @@ public class CarPhoto extends Photo {
     /**
      * custom constructor
      */
-    public CarPhoto(int buildYear, CarBrand carBrand, CarModel carModel) throws InvalidBuildYearException {
+    public CarPhoto(int buildYear, CarBrand carBrand, CarModel carModel, String typeName) throws InvalidBuildYearException {
         super();
 
         if(carBrand == null || carModel == null) throw new IllegalArgumentException("Arguments must not be null");
@@ -46,6 +47,7 @@ public class CarPhoto extends Photo {
         assertCarBrand(brand.asInt());
         assertCarModel(model.asInt());
 
+        this.car = Car.createCar(typeName);
         this.buildYear = buildYear;
         this.brand = carBrand;
         this.model = carModel;
