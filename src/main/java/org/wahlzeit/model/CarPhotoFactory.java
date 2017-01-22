@@ -14,9 +14,9 @@ public class CarPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(CarPhotoFactory.class.getName());
 
-    private static PhotoFactory instance  = null;
+    private static CarPhotoFactory instance  = null;
 
-    public static PhotoFactory getInstance(){
+    public static CarPhotoFactory getInstance(){
         if(instance == null){
             log.config(LogBuilder.createSystemMessage().addAction("setting CarPhotoFactory").toString());
             instance = new CarPhotoFactory();
@@ -24,7 +24,7 @@ public class CarPhotoFactory extends PhotoFactory {
         return instance;
     }
 
-    protected static synchronized void setInstance(PhotoFactory photoFactory) {
+    protected static synchronized void setInstance(CarPhotoFactory photoFactory) {
         if (instance != null) {
             throw new IllegalStateException("attempt to initalize CarPhotoFactory twice");
         }
@@ -33,12 +33,12 @@ public class CarPhotoFactory extends PhotoFactory {
     }
 
     @Override
-    public Photo createPhoto(){
+    public CarPhoto createPhoto(){
          return new CarPhoto();
     }
 
     @Override
-    public Photo createPhoto(PhotoId id){
+    public CarPhoto createPhoto(PhotoId id){
         return new CarPhoto(id);
     }
 
