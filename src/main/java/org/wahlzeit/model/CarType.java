@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import com.googlecode.objectify.annotation.Ignore;
 import org.wahlzeit.annotation.PatternInstance;
 import org.wahlzeit.services.DataObject;
 
@@ -16,11 +17,13 @@ public class CarType extends DataObject{
     /**
      *
      */
+    @Ignore
     private  CarType superType = null;
 
     /**
      *
      */
+    @Ignore
     private Set<CarType> subTypes = new HashSet<CarType>();
 
     /**
