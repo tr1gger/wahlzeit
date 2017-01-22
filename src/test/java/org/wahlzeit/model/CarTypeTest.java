@@ -21,8 +21,8 @@ public class CarTypeTest {
 
     @Before
     public void startUp(){
-        sportsCar = Car.createCar(TYPE_NAME_SPORTS_CAR);
-        suvCar = Car.createCar(TYPE_NAME_SUV_CAR);
+        sportsCar = carManager.createCar(TYPE_NAME_SPORTS_CAR, CarEngine.ELECTRIC, CarBrand.AUDI);
+        suvCar = carManager.createCar(TYPE_NAME_SUV_CAR, CarEngine.DIESEL, CarBrand.MERCEDES);
     }
 
     @Test

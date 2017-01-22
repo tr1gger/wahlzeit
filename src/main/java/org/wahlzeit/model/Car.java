@@ -2,8 +2,7 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.annotation.PatternInstance;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
+import static org.wahlzeit.utils.Asserts.*;
 
 @PatternInstance(
         patternName = "Object Type",
@@ -16,6 +15,15 @@ public class Car {
      */
     private int id;
 
+    /**
+     *
+     */
+    private CarBrand brand;
+
+    /**
+     *
+     */
+    private CarEngine engine;
 
     /**
      *
@@ -28,12 +36,17 @@ public class Car {
     private static CarManager carManager = CarManager.getInstance();
 
 
-    public Car(CarType carType){
+    private Car(CarType carType, CarEngine carEngine, CarBrand carBrand){
+        assertCarBrand(carBrand.asInt());
+        assertCarEngine(carEngine.asInt());
+
+        this.engine = carEngine;
+        this.brand = carBrand;
         this.carType = carType;
     }
 
-    public static Car createCar(String typeName){
-        return carManager.createCar(typeName);
+    public static Car createInstance(CarType carType, CarEngine carEngine, CarBrand carBrand){
+        return carManager.getCar(new Car(carType, carEngine, carBrand));
     }
 
     /**
@@ -62,5 +75,35 @@ public class Car {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public CarBrand getBrand() {
+        return brand;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setBrand(CarBrand brand) {
+        assertCarBrand(brand.asInt());
+        this.brand = brand;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public CarEngine getEngine() {
+        return engine;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setEngine(CarEngine engine) {
+        assertCarEngine(engine.asInt());
+        this.engine = engine;
     }
 }

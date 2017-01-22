@@ -13,13 +13,9 @@ import static org.wahlzeit.utils.Asserts.*;
 )
 public class CarPhoto extends Photo {
 
-    private CarBrand brand;
-
-    private CarModel model;
-
-    private int buildYear;
-
     private Car car;
+
+    private static CarManager carManager = CarManager.getInstance();
 
     /**
      * default constructor
@@ -38,63 +34,23 @@ public class CarPhoto extends Photo {
     /**
      * custom constructor
      */
-    public CarPhoto(int buildYear, CarBrand carBrand, CarModel carModel, String typeName) throws InvalidBuildYearException {
+    public CarPhoto(CarBrand carBrand, CarEngine carEngine, String typeName) throws InvalidBuildYearException {
         super();
 
-        if(carBrand == null || carModel == null) throw new IllegalArgumentException("Arguments must not be null");
+        if(carBrand == null || carEngine == null) throw new IllegalArgumentException("Arguments must not be null");
 
-        assertBuildYear(buildYear);
-        assertCarBrand(brand.asInt());
-        assertCarModel(model.asInt());
+        assertCarBrand(carBrand.asInt());
+        assertCarEngine(carEngine.asInt());
 
-        this.car = Car.createCar(typeName);
-        this.buildYear = buildYear;
-        this.brand = carBrand;
-        this.model = carModel;
+        this.car = carManager.createCar(typeName, carEngine, carBrand);
     }
 
-    /**
-     * @methodtype get
-     */
-    public CarBrand getBrand() {
-        return brand;
+
+    public Car getCar() {
+        return car;
     }
 
-    /**
-     * @methodtype set
-     */
-    public void setBrand(CarBrand brand) {
-        assertCarBrand(brand.asInt());
-        this.brand = brand;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public CarModel getModel() {
-        return model;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setModel(CarModel model) {
-        assertCarModel(model.asInt());
-        this.model = model;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public int getBuildYear() {
-        return buildYear;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setBuildYear(int buildYear) throws InvalidBuildYearException {
-        assertBuildYear(buildYear);
-        this.buildYear = buildYear;
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

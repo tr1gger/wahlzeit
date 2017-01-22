@@ -46,23 +46,25 @@ public class CarManager {
     /**
      * @methodtype creation
      */
-    public Car createCar(String typeName){
+    public Car createCar(String typeName, CarEngine carEngine, CarBrand carBrand){
         CarType carType = CarType.getInstance(typeName);
-        Car car = carType.createInstance();
-        car.setId(id.incrementAndGet());
-        cars.put(car.getId(), car);
-        return car;
+        return Car.createInstance(carType, carEngine, carBrand);
     }
 
 
     public CarType getCarType(CarType carType){
         if(carTypes.get(carType.getTypeName()) == null){
-
             carTypes.put(carType.getTypeName(), carType);
             return carType;
         }
         return carTypes.get(carType.getTypeName());
+    }
 
+    public Car getCar(Car car){
+        car.setId(id.incrementAndGet());
+        cars.put(car.getId(), car);
+
+        return car;
     }
 
     /**

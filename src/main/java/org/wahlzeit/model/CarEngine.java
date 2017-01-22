@@ -2,22 +2,22 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.utils.EnumValue;
 
-public enum CarModel implements EnumValue {
+public enum CarEngine implements EnumValue {
 
-    COUPE(0), VAN(1), SPORTSCAR(2), SUV(3);
+    ELECTRIC(0), DIESEL(1), OTTO(2), HYBRID(3);
 
     private int value = 0;
 
-    CarModel(int i) {
+    CarEngine(int i) {
         this.value = i;
     }
 
-    private static CarModel[] allValues = {
-            COUPE, VAN, SPORTSCAR, SUV
+    private static CarEngine[] allValues = {
+            ELECTRIC, DIESEL, OTTO, HYBRID
     };
 
     private static String[] valueNames = {
-            "Coupe", "Van", "Sports Car", "SUV"
+            "Electric", "Diesel", "Otto", "hybrid"
     };
 
 
@@ -38,6 +38,6 @@ public enum CarModel implements EnumValue {
 
     @Override
     public String getTypeName() {
-        return "CarModel";
+        return "CarEngine";
     }
 }

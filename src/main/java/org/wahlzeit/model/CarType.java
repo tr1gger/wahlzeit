@@ -47,13 +47,6 @@ public class CarType extends DataObject{
     }
 
     /**
-     * @methodtype creation
-     */
-    public Car createInstance(){
-        return new Car(this);
-    }
-
-    /**
      * @methodtype get
      */
     public String getTypeName() {
