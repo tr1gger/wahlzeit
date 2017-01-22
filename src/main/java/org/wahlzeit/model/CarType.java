@@ -32,8 +32,18 @@ public class CarType extends DataObject{
     private String typeName;
 
 
-    public CarType(String typename){
-        this.typeName = typename;
+    /**
+     *
+     */
+    private static CarManager carManager = CarManager.getInstance();
+
+
+    private CarType(String typeName){
+        this.typeName = typeName;
+    }
+
+    public static CarType getInstance(String typeName){
+        return carManager.getCarType(new CarType(typeName));
     }
 
     /**
