@@ -20,7 +20,7 @@ public class CarManager {
     /**
      *
      */
-    public static CarManager carManager = new CarManager();
+    private static CarManager carManager = new CarManager();
 
     /**
      *
