@@ -16,10 +16,6 @@ public class Car {
      */
     private int id;
 
-    /**
-     *
-     */
-    public static Car instance;
 
     /**
      *
